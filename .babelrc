@@ -1,0 +1,36 @@
+{
+    "presets": [
+        [
+            "@babel/preset-env",
+            {
+                "modules": "auto",
+                "targets": {
+                    "browsers": [
+                        "last 2 Chrome versions",
+                        "last 2 Firefox versions",
+                        "last 2 Safari versions",
+                        "last 2 iOS versions",
+                        "last 1 Android version",
+                        "last 1 ChromeAndroid version"
+                    ]
+                }
+            }
+        ]
+    ],
+    "plugins": [
+        [
+            "@babel/plugin-transform-react-jsx",
+            {
+                "pragma": "h",
+                "pragmaFrag": "Fragment"
+            }
+        ],
+        [
+            "@babel/transform-runtime",
+            {
+                "corejs": 3
+            }
+        ],
+        ["@babel/plugin-proposal-class-properties"]
+    ]
+}

@@ -1,0 +1,5 @@
+.docker/database
+.vscode/sftp.json
+.env
+dist/
+node_modules/
