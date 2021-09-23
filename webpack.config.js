@@ -2,74 +2,32 @@
 const { merge } = require("webpack-merge");
 const path = require("path");
 const pkg = require("./package.json");
-const git = require('git-rev-sync');
+const git = require("git-rev-sync");
 
 // utils
-const configureEntries = require("./src/utils/configureEntries");
+const mapModules = require("./src/utils/mapModules");
 
 // webpack plugins
 const webpack = require("webpack");
 const WebpackNotifierPlugin = require("webpack-notifier");
-const TerserPlugin = require('terser-webpack-plugin');
+const TerserPlugin = require("terser-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 
 // others
 const date = new Date();
+const modules = mapModules(path.join(__dirname, "src/modules/**/entries.js"));
 
-const common = merge({
-  name: "",
-  entry: configureEntries(path.join(__dirname, "src/modules", "**/entries.js")),
+const common = {
+  entry: modules.reduce((entries, module) => {
+    entries[module.key] = path.resolve(__dirname, module.entry);
+    return entries;
+  }, {}),
   output: {
-    path: path.resolve(__dirname, "../dist"),
-    publicPath: "/",
-    filename: "[name].[contenthash:5].bundle.js",
+    path: path.resolve(__dirname, "dist"),
+    filename: "[name]/main.[contenthash:5].js",
     clean: true,
-  },
-  module: {
-    rules: [],
-  },
-  plugins: [
-    new WebpackNotifierPlugin({
-      title: "Webpack",
-      excludeWarnings: true,
-      alwaysNotify: true,
-    }),
-  ],
-});
-
-const dev = merge(common, {
-  mode: "development",
-  devtool: "eval-cheap-module-source-map",
-  cache: {
-    type: "memory",
-  },
-  devServer: {
-    public:
-      process.env.DEVSERVER_PUBLIC ||
-      `http://localhost:${process.env.DEVSERVER_PORT || 3001}`,
-    host: process.env.DEVSERVER_HOST || "0.0.0.0",
-    port: process.env.DEVSERVER_PORT || 3001,
-    serveIndex: true,
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-    },
-  },
-});
-
-const prod = merge(common, {
-  output: {
-    publicPath: process.env.LIVE_URL + "/" || "/",
-    filename: "[name].[chunkhash:5].bundle.js",
-    clean: true,
-  },
-  mode: "production",
-  optimization: {
-    minimize: true,
-    minimizer: [
-      new TerserPlugin({
-        parallel: true,
-        extractComments: true,
-      })
-    ],
   },
   module: {
     rules: [
@@ -81,20 +39,127 @@ const prod = merge(common, {
     ],
   },
   plugins: [
-    new webpack.BannerPlugin({
-        banner: [
-            '/*!',
-            ` * @project ${pkg.name}`,
-            ` * @build ${date.toUTCString()}`,
-            ` * @release ${git.branch()}-${git.short()}`,
-            ` * @copyright Copyright (c) ${date.getFullYear()} - ${pkg.author
-            }`,
-            ' */',
-            ''
-        ].join('\n'),
-        raw: true
+    new WebpackNotifierPlugin({
+      title: "Webpack",
+      excludeWarnings: true,
+      alwaysNotify: true,
+    }),
+    ...modules.map((module) => {
+      return new HtmlWebpackPlugin({
+        title: module.meta.title,
+        filename: `${module.key}/index.html`,
+        template: path.join(__dirname, `src/modules/${module.key}/index.html`),
+        chunks: [module.key],
+        meta: {
+          viewport: "width=device-width, initial-scale=1, shrink-to-fit=no",
+          ...module.meta,
+        },
+        inject: "body",
+      });
     }),
   ],
-});
+};
 
-module.exports = (env, argv) => (argv.mode === "development" ? dev : prod);
+const dev = {
+  mode: "development",
+  devtool: "eval-cheap-module-source-map",
+  output: {
+    publicPath: "/dist",
+  },
+  cache: {
+    type: "memory",
+  },
+  module: {
+    rules: [
+      {
+        test: /\.css$/i,
+        use: [
+          {
+            loader: "style-loader",
+            options: { injectType: "styleTag" },
+          },
+          {
+            loader: "css-loader",
+            options: {
+              url: false,
+            },
+          },
+        ],
+      },
+    ],
+  },
+  devServer: {
+    public: "/",
+    host: "0.0.0.0",
+    port: process.env.DEVSERVER_PORT || 3001,
+    serveIndex: true,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
+  },
+};
+
+const prod = {
+  mode: "production",
+  output: {
+    publicPath: process.env.LIVE_URL || "/",
+  },
+  module: {
+    rules: [
+      {
+        test: /\.css$/i,
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: "css-loader",
+            options: {
+              importLoaders: 2,
+              url: true,
+            },
+          },
+        ],
+      },
+    ],
+  },
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        parallel: true,
+        extractComments: false,
+      }),
+      new CssMinimizerPlugin({
+        minimizerOptions: {
+          preset: ["default"],
+        },
+      }),
+    ],
+  },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: "[name]/main.[contenthash:5].css",
+      chunkFilename: "[id].css",
+    }),
+    new webpack.BannerPlugin({
+      banner: [
+        "/*!",
+        ` * @project ${pkg.name}`,
+        ` * @build ${date.toUTCString()}`,
+        ` * @release ${git.branch()}-${git.short()}`,
+        ` * @copyright Copyright (c) ${date.getFullYear()} - ${pkg.author}`,
+        " */",
+        "",
+      ].join("\n"),
+      raw: true,
+    }),
+  ],
+};
+
+module.exports = (env, args) => {
+  switch (args.mode) {
+    case "development":
+      return merge(common, dev);
+    default:
+      return merge(common, prod);
+  }
+};

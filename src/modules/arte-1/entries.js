@@ -1,6 +1,11 @@
-const path = require('path');
+const path = require("path");
 module.exports = {
-    entries: {
-        'index': path.resolve(__dirname, 'js/index.js'),
-    }
+    key: 'arte-1',
+    seed: '',
+    meta: {
+        title: "Arte generativa 1",
+        description: "",
+        keywords: "",
+    },
+    entry: path.resolve(__dirname, "js/index.js") 
 };
