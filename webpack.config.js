@@ -18,15 +18,21 @@ const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 // others
 const date = new Date();
 const modules = mapModules(path.join(__dirname, "src/modules/**/entries.js"));
+const homeModule = require(path.join(__dirname, "src/home/entries.js"));
+
+const moduleEntries = modules.reduce((entries, module) => {
+  entries[`${module.key}/main`] = path.resolve(__dirname, module.entry);
+  return entries;
+}, {});
 
 const common = {
-  entry: modules.reduce((entries, module) => {
-    entries[module.key] = path.resolve(__dirname, module.entry);
-    return entries;
-  }, {}),
+  entry: {
+    "index": path.resolve(__dirname, homeModule.entry),
+    ...moduleEntries,
+  },
   output: {
     path: path.resolve(__dirname, "dist"),
-    filename: "[name]/main.[contenthash:5].js",
+    filename: "[name].[contenthash:5].js",
     clean: true,
   },
   module: {
@@ -44,12 +50,23 @@ const common = {
       excludeWarnings: true,
       alwaysNotify: true,
     }),
+    new HtmlWebpackPlugin({
+      title: homeModule.meta.title,
+      filename: 'index.html',
+      template: path.join(__dirname, 'src/home/index.html'),
+      chunks: ['index'],
+      meta: {
+        viewport: "width=device-width, initial-scale=1, shrink-to-fit=no",
+        ...homeModule.meta,
+      },
+      inject: "body",
+    }),
     ...modules.map((module) => {
       return new HtmlWebpackPlugin({
         title: module.meta.title,
         filename: `${module.key}/index.html`,
         template: path.join(__dirname, `src/modules/${module.key}/index.html`),
-        chunks: [module.key],
+        chunks: [`${module.key}/main`],
         meta: {
           viewport: "width=device-width, initial-scale=1, shrink-to-fit=no",
           ...module.meta,
@@ -137,7 +154,7 @@ const prod = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: "[name]/main.[contenthash:5].css",
+      filename: "[name].[contenthash:5].css",
       chunkFilename: "[id].css",
     }),
     new webpack.BannerPlugin({
