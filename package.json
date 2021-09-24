@@ -7,7 +7,7 @@
     "test": "jest",
     "debug": "webpack serve --config webpack.dev.js",
     "dev": "webpack-dashboard -- webpack serve --mode=development --config webpack.config.js",
-    "build": "NODE_ENV=production webpack --config webpack.config.js --progress",
+    "build": "webpack --config webpack.config.js --progress",
     "serve": "npx http-server ./dist"
   },
   "author": "",
