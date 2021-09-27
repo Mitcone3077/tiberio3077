@@ -18,7 +18,7 @@ const sketch = ({ context, width, height }) => {
   }
 
   return ({ context, width, height }) => {
-    context.fillStyle = "black";
+    context.fillStyle = "white";
     context.fillRect(0, 0, width, height);
 
     for (let i = 0; i < agents.length; i++) {
@@ -32,7 +32,7 @@ const sketch = ({ context, width, height }) => {
         if (dist > 300) continue;
 
         context.lineWidth = math.mapRange(dist, 0, 300, 1, 0.007);
-        context.strokeStyle = "white";
+        context.strokeStyle = "black";
         context.beginPath();
         context.moveTo(qAgent.pos.x, qAgent.pos.y);
         context.lineTo(other.pos.x, other.pos.y);
