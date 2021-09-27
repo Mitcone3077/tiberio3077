@@ -1,6 +1,6 @@
 import canvasSketch from "canvas-sketch";
-import { random, math } from "canvas-sketch-util";
-import style from "../css/style.css";
+import { random, math, color } from "canvas-sketch-util";
+//import style from "../css/style.css";
 
 
 const settings = {
@@ -13,8 +13,8 @@ const sketch = () => {
     context.fillStyle = 'white';
     context.fillRect(0, 0, width, height);
   
-    const cols = 10;
-    const rows = 10;
+    const cols = 20;
+    const rows = 20;
     const numCells = cols * rows;
 
     
@@ -41,7 +41,7 @@ const sketch = () => {
       const n = random.noise2D(x + frame * 10, y, 0.001); // noise2D(x, y, frequency = 1)
       const angle = n * Math.PI * 0.2;
       //const scale = (n + 1) / 2 * 30; //converting a -1~1 random to 0~1;
-      const scale = math.mapRange(n, -1, 1, 1, 10);
+      const scale = math.mapRange(n, -1, 1, 0, 4);
       const arcFull = math.mapRange(-n, -1, 1, 0, 2);; // * Math.PI
 
 
@@ -50,14 +50,16 @@ const sketch = () => {
       context.translate(x, y);
       context.translate(margX, margY);
       context.translate(cellw * 0.5, cellh * 0.5);
-      //context.rotate(angle);
+      context.rotate(angle);
+      //context.fillStyle = math.mapRange(scale, 0, 6.2, 0, 150)
 
       context.lineWidth = scale;
 
       context.beginPath();
       //context.moveTo(w * -0.5, 0);
-      context.ellipse(x * 0.001 , y * 0.001, w * 0.6 , h * 0.45, angle * 10, Math.PI * arcFull, 2 * Math.PI);
       //context.lineTo(w * 0.5, 0);
+      context.ellipse(x * 0.0001 , y * 0.0001, w * 0.58 , h * 0.6, angle * 10, Math.PI * arcFull, 2 * Math.PI);
+      //context.fill();
       context.stroke();
       context.restore();
 
