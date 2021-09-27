@@ -1,7 +1,7 @@
 import canvasSketch from "canvas-sketch";
 import { random, math, color } from "canvas-sketch-util";
-import Tweakpane from "tweakpane";
-//const Tweakpane = require("tweakpane");
+//import Tweakpane from "tweakpane";
+const Tweakpane = require("tweakpane");
 //import style from "../css/style.css";
 
 
@@ -15,8 +15,8 @@ const sketch = () => {
     context.fillStyle = 'white';
     context.fillRect(0, 0, width, height);
   
-    const cols = 20;
-    const rows = 20;
+    const cols = 12;
+    const rows = 12;
     const numCells = cols * rows;
 
     
