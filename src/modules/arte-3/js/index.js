@@ -1,6 +1,6 @@
 import canvasSketch from "canvas-sketch";
 import { random, math } from "canvas-sketch-util";
-//import style from "../css/style.css";
+import style from "../css/style.css";
 
 
 const settings = {
