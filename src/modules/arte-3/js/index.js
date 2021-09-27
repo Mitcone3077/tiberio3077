@@ -1,6 +1,7 @@
-const canvasSketch = require('canvas-sketch');
-const random = require('canvas-sketch-util/random');
-const math = require('canvas-sketch-util/math');
+import canvasSketch from "canvas-sketch";
+import { random, math } from "canvas-sketch-util";
+//import style from "../css/style.css";
+
 
 const settings = {
   dimensions: [ 1080, 1080 ],
