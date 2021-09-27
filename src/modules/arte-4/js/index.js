@@ -15,8 +15,8 @@ const sketch = () => {
     context.fillStyle = 'white';
     context.fillRect(0, 0, width, height);
   
-    const cols = 12;
-    const rows = 12;
+    const cols = 20;
+    const rows = 20;
     const numCells = cols * rows;
 
     
