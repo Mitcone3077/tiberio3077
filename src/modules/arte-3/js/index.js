@@ -1,6 +1,6 @@
 import canvasSketch from "canvas-sketch";
 import { random, math, color } from "canvas-sketch-util";
-import style from "../css/style.css";
+//import style from "../css/style.css";
 
 
 const settings = {
@@ -13,8 +13,8 @@ const sketch = () => {
     context.fillStyle = 'white';
     context.fillRect(0, 0, width, height);
   
-    const cols = 20;
-    const rows = 20;
+    const cols = 10;
+    const rows = 10;
     const numCells = cols * rows;
 
     
