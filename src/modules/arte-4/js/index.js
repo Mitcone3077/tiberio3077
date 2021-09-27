@@ -1,6 +1,8 @@
 import canvasSketch from "canvas-sketch";
 import { random, math, color } from "canvas-sketch-util";
-import style from "../css/style.css";
+import Tweakpane from "tweakpane";
+//const Tweakpane = require("tweakpane");
+//import style from "../css/style.css";
 
 
 const settings = {
@@ -69,5 +71,18 @@ const sketch = () => {
 
   };
 };
+
+const createPane = () =>{
+  const pane = new Tweakpane.Pane();
+  let folder;
+
+
+  folder = pane.addFolder({title: 'Grid'});
+
+
+};
+
+
+createPane();
 
 canvasSketch(sketch, settings);
