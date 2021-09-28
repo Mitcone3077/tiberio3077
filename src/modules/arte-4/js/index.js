@@ -1,7 +1,7 @@
 import canvasSketch from "canvas-sketch";
 import { random, math, color } from "canvas-sketch-util";
-import Tweakpane from "tweakpane";
-//const Tweakpane = require("tweakpane");
+//import Tweakpane from "tweakpane";
+const Tweakpane = require("tweakpane");
 //import style from "../css/style.css";
 
 
