@@ -1,0 +1,8 @@
+.docker/database
+.vscode/sftp.json
+.env
+package.json
+package-lock.json
+dist/
+node_modules/
+assets/

@@ -8,10 +8,5 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "canvas-sketch": "^0.7.4",
-    "canvas-sketch-util": "^1.10.0",
-    "tweakpane": "^3.0.5"
-  }
+  "license": "ISC"
 }

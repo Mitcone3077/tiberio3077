@@ -1,7 +1,7 @@
 import canvasSketch from "canvas-sketch";
 import { random, math, color } from "canvas-sketch-util";
 import { Pane } from 'tweakpane';
-import style from "../css/style.css";
+//import style from "../css/style.css";
 
 
 const settings = {
