@@ -110,6 +110,11 @@ const dev = {
     host: "0.0.0.0",
     port: process.env.DEVSERVER_PORT || 3001,
     serveIndex: true,
+    hot: false,
+    contentBase: path.resolve(__dirname, 'src/modules/**/*'),
+    watchContentBase: true,
+    liveReload: true,
+    //watchFiles: [path.resolve(__dirname, 'src/modules/**/*')],
     headers: {
       "Access-Control-Allow-Origin": "*",
     },

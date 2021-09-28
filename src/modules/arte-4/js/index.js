@@ -1,8 +1,7 @@
 import canvasSketch from "canvas-sketch";
 import { random, math, color } from "canvas-sketch-util";
-//import Tweakpane from "tweakpane";
-const Tweakpane = require("tweakpane");
-//import style from "../css/style.css";
+import { Pane } from 'tweakpane';
+import style from "../css/style.css";
 
 
 const settings = {
@@ -91,7 +90,7 @@ const sketch = () => {
 };
 
 const createPane = () =>{
-  const pane = new Tweakpane.Pane();
+  const pane = new Pane();
   let folder;
 
 

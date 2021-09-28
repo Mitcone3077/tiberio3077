@@ -2,7 +2,7 @@ const path = require("path");
 module.exports = {
     seed: '',
     meta: {
-        title: "Arte generativa 1",
+        title: "Arte generativa 4",
         description: "",
         keywords: "",
     },
