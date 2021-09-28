@@ -27,7 +27,7 @@ const moduleEntries = modules.reduce((entries, module) => {
 
 const common = {
   entry: {
-    "index": path.resolve(__dirname, homeModule.entry),
+    index: path.resolve(__dirname, homeModule.entry),
     ...moduleEntries,
   },
   output: {
@@ -52,9 +52,9 @@ const common = {
     }),
     new HtmlWebpackPlugin({
       title: homeModule.meta.title,
-      filename: 'index.html',
-      template: path.join(__dirname, 'src/home/index.html'),
-      chunks: ['index'],
+      filename: "index.html",
+      template: path.join(__dirname, "src/home/index.html"),
+      chunks: ["index"],
       meta: {
         viewport: "width=device-width, initial-scale=1, shrink-to-fit=no",
         ...homeModule.meta,
@@ -106,19 +106,20 @@ const dev = {
     ],
   },
   devServer: {
-    public: "/",
-    host: "0.0.0.0",
+    host: process.env.HOST || "localhost",
     port: process.env.DEVSERVER_PORT || 3001,
     serveIndex: true,
-    hot: false,
-    contentBase: path.resolve(__dirname, 'src/modules/**/*'),
-    watchContentBase: true,
-    liveReload: true,
-    //watchFiles: [path.resolve(__dirname, 'src/modules/**/*')],
+    hot: true,
+    disableHostCheck: true,
+    openPage: '/',
     headers: {
       "Access-Control-Allow-Origin": "*",
     },
+    transportMode: 'ws',
   },
+  plugins:[
+    new webpack.HotModuleReplacementPlugin()
+  ]
 };
 
 const prod = {
