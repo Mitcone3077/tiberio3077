@@ -61,7 +61,7 @@ const sketch = () => {
       const angle = n * Math.PI * params.amp;
       //const scale = (n + 1) / 2 * 30; //converting a -1~1 random to 0~1;
       const scale = math.mapRange(n, -1, 1, params.scaleMin, params.scaleMax);
-      //const arcFull = math.mapRange(-n, -1, 1, 0, 2);; // * Math.PI
+      const arcFull = math.mapRange(-n, -1, 1, 0, 2);; // * Math.PI
 
 
 
@@ -76,9 +76,9 @@ const sketch = () => {
       context.lineCap = params.lineCap;
 
       context.beginPath();
-      context.moveTo(w * -0.5, 0);
-      context.lineTo(w * 0.5, 0);
-      //context.ellipse(x * 0.0001 , y * 0.0001, w * 0.58 , h * 0.6, angle * 10, Math.PI * arcFull, 2 * Math.PI);
+      //context.moveTo(w * -0.5, 0);
+     // context.lineTo(w * 0.5, 0);
+      context.ellipse(x * 0.0001 , y * 0.0001, w * 0.58 , h * 0.6, angle * 10, Math.PI * arcFull, 2 * Math.PI);
       //context.fill();
       context.stroke();
       context.restore();
