@@ -17,6 +17,10 @@ const sketch = () => {
     context.fillRect(0, 0, width, height);
 
 
+    context.fillStyle = 'black';
+    context.fillRect(50,50,50,50);
+    context.fill();
+
   };
 };
 
