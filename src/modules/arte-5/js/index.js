@@ -117,8 +117,8 @@ const sketch = ({ context, width, height, frame }) => {
       const angle = n * Math.PI * params.amp;
       const arcFull = math.mapRange(-n, -1, 1, 0, 2);
 
-     //cellw *= n;
-     //cellh *= n;
+     cellw = scale;
+     cellh = scale;
       
 
       context.save();
