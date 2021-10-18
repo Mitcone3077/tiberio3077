@@ -1,23 +1,13 @@
 import canvasSketch from "canvas-sketch";
 import { random, math, color } from "canvas-sketch-util";
-import { Pane } from 'tweakpane';
+//import { Pane } from 'tweakpane';
 import style from "../css/style.css";
 
 
 const settings = {
   dimensions: [ 1080, 1080 ],
-  animate: true
-
-};
-
-const params = {
- scaleMin: 1,
- scaleMax: 2,
- freq: 0.001,
- amp: 0.2,
- animate: true,
- frame: 0,
- lineCap: 'butt',
+  animate: true,
+  fps: 1
 };
 
 
@@ -35,7 +25,7 @@ const typeContext = typeCanvas.getContext('2d');
 
 
 
-const sketch = ({ context, width, height, frame }) => {
+const sketch = ({ context, width, height}) => {
 
   const cell = 10;
   const cols = Math.floor(width / cell);
@@ -50,7 +40,7 @@ const sketch = ({ context, width, height, frame }) => {
 
 
 
-  return ({ context, width, height, frame }) => {
+  return ({ context, width, height}) => {
     typeContext.fillStyle = 'black';
     typeContext.fillRect(0, 0, cols, rows);
 
@@ -84,12 +74,21 @@ const sketch = ({ context, width, height, frame }) => {
 
     const typeData = typeContext.getImageData(0, 0, cols, rows).data;
 
-    context.drawImage(typeCanvas, 0, 0);
 
 
-    let cellw = cell;
-    let cellh = cell;
 
+    context.textBaseline = 'middle';
+    context.texAlign = 'center';
+
+
+   
+
+
+
+    context.fillStyle = 'white';
+    context.fillRect(0, 0, width, height);
+
+ context.drawImage(typeCanvas, 0, 0);
 
 
     for (let i = 0; i < numCells; i++) {
@@ -104,36 +103,34 @@ const sketch = ({ context, width, height, frame }) => {
       const b = typeData[i * 4 + 2];
       const a = typeData[i * 4 + 3];
 
-      //context.fillStyle = `rgb(${r}, ${g}, ${b})`;
-      context.strokeStyle = `rgb(${r}, ${g}, ${b})`;
+      //const glyph = getGlyph(r);
 
-      const f = params.animate ? frame : params.frame;
+      //context.font = `${cell * 1.3}px ${fontFamily}`;
+      //if (Math.random() < 0.1) context.font = `${cell * 8}px ${fontFamily}`;
 
-      const n = random.noise3D(x, y, f * 10, params.freq);
+     // random.noise3D(x, y, f * 10, params.freq);
 
-      const scale = math.mapRange(n, -1, 1, params.scaleMin, params.scaleMax);
-      
-    
-      const angle = n * Math.PI * params.amp;
-      const arcFull = math.mapRange(-n, -1, 1, 0, 2);
 
-     cellw = scale;
-     cellh = scale;
-      
+      //context.fillStyle = 'green';
+
+
+      context.fillStyle = `rgb(${r}, ${g}, ${b})`;
+      //console.log(r,g,b,a)
+      //context.strokeStyle = `rgb(${r}, ${g}, ${b})`;
+
 
       context.save();
       context.translate(x, y);
       context.translate(cell * 0.5, cell * 0.5);
-      //context.rotate(angle);
 
-      //context.lineWidth = scale;
-      //context.lineCap = params.lineCap;
       //context.fillRect(0, 0, cell, cell);
       context.beginPath();
-      context.ellipse(0, 0 , cellw , cellh, angle * 10, Math.PI * arcFull, 2 * Math.PI);
-      //context.arc(0, 0, cell * n-1, 0,Math.PI * 2);
-      //context.fill();
-      context.stroke();
+      context.fillRect(0, 0, 5, 3);
+
+
+      //context.fillText(text, 0, 0);
+      context.fill();
+      //context.stroke();
 
 
       context.restore();
@@ -143,28 +140,19 @@ const sketch = ({ context, width, height, frame }) => {
   };
 };
 
+const getGlyph = (v) => {
+
+  if (v < 50) return '';
+  if (v < 100) return '.';
+  if (v < 150) return '-';
+  if (v < 200) return '+';
 
 
-const createPane = () =>{
-  const pane = new Pane();
-  let folder;
+  const glyphs = '_= /'.split('');
 
-
-  folder = pane.addFolder({title: 'Grid'});
-    folder.addInput(params, 'lineCap', {options: {butt: 'butt', round: 'round', square: 'square'}});
-    folder.addInput(params, 'scaleMin', {min: 0.1, max: 7, step: 0.1});
-    folder.addInput(params, 'scaleMax', {min: 0.1, max: 7, step: 0.1});
-
-
-folder = pane.addFolder({title: 'noise'});
-  folder.addInput(params, 'freq', {min: -0.01, max: 0.01});
-  folder.addInput(params, 'amp', {min: 0, max: 1});
-  folder.addInput(params, 'animate');
-  folder.addInput(params, 'frame', {min: 0, max: 999});
-
+  return random.pick(glyphs);
 
 };
-
 
 
 const onKeyUp = (e) => {
@@ -179,6 +167,4 @@ document.addEventListener('keyup', onKeyUp);
   /*manager = await*/ canvasSketch(sketch, settings);
 //};
 
-createPane();
 //start();
-
