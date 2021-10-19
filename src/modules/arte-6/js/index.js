@@ -12,7 +12,7 @@ const settings = {
 
 
 let manager;
-let text = 'A';
+let text = '4';
 let fontSize = 1200;
 let fontFamily = 'serif';
 
