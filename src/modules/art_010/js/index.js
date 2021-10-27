@@ -1,23 +1,39 @@
-import canvasSketch from "canvas-sketch";
-import { random, math, color } from "canvas-sketch-util";
-//import { Pane } from 'tweakpane';
+import p5 from "p5";
 import style from "../css/style.css";
-
-
-const settings = {
-  dimensions: [ 1080, 1080 ]
-};
+import { Pane } from 'tweakpane';
 
 
 
-
-const sketch = () => {
-  return ({ context, width, height }) => {
-    context.fillStyle = 'white';
-    context.fillRect(0, 0, width, height);
+const init = (p) =>{          //========================INITIALIZATION
+  
 
 
-  };
-};
 
-canvasSketch(sketch, settings);
+  p.setup = function setup() {//========================SETUP FUNCTION
+
+    p.createCanvas(600, 600);
+    p.background(240);
+
+
+
+
+
+   } //===END OF SETUP
+
+
+
+  p.draw = function draw() {//============================DRAW FUNCTION
+
+
+
+   } //===END OF DRAW
+
+
+
+
+
+
+ }; //===END OF INIT
+
+
+new p5 (init,document.getElementById("p5")); //== RUN >
