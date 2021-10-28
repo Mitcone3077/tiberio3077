@@ -1,5 +1,4 @@
 import p5 from "p5";
-import { Vector } from "p5";
 import style from "../css/style.css";
 import { Pane } from "tweakpane";
 
